@@ -6,7 +6,7 @@ The Bash Builder takes an entrypoint of a bash function, imports its dependencie
 
 A simple "hello world" example:
 
-```
+```bash
 handler() {
   echo "Hello, from Bash!"
 }
@@ -24,7 +24,7 @@ cd my-bash-project/api/uppercase
 
 Inside the my-bash-project > api > uppercase directory, create an index.sh file with the following contents:
 
-```
+```bash
 import "string@0.0.1"
 import "querystring@1.3.0"
 
@@ -40,7 +40,7 @@ A shell function that takes querystrings and prints them as uppercase.
 
 The final step is to define a build that will take this entrypoint (index.sh), build it, and turn it into a lambda using a now.json configuration in the root directory (my-bash-project):
 
-```
+```json
 {
   "version": 2,
   "builds": [{ "src": "api/**/index.sh", "use": "now-bash" }]
@@ -49,7 +49,7 @@ The final step is to define a build that will take this entrypoint (index.sh), b
 
 Import can be configured by adding options to the import property of the config. The IMPORT_ prefix must not be set in this case:
 
-```
+```json
 {
   "version": 2,
   "builds": [
@@ -79,7 +79,7 @@ If your Lambda requires additional resources to be added into the final bundle, 
 
 Any files added to the current working directory at build-time will be included in the output Lambda.
 
-```
+```bash
 build() {
   date > build-time.txt
 }
@@ -95,7 +95,7 @@ Demo: https://bash-build-j3adniz41.now.sh/
 ## Response Headers
 The default Content-Type is text/plain; charset=utf8 but you can change it by setting a response header.
 
-```
+```bash
 handler() {
   http_response_header "Content-Type" "text/html; charset=utf8"
   echo "<h1>Current time</h1><p>$(date)</p>"
@@ -107,7 +107,7 @@ Demo: https://bash-html-8vveguuqn.now.sh
 ## JSON Response
 It is common for serverless functions to communicate via JSON so you can use the http_response_json function to set the content type to application/json; charset=utf8.
 
-```
+```bash
 handler() {
   http_response_json
   echo "{ "title": "Current time", "body": "$(date)" }"
@@ -119,7 +119,7 @@ Demo: https://bash-json-ffsi051oy.now.sh
 ## Status Code
 The default status code is 200 but you can change it with the http_response_code method.
 
-```
+```bash
 handler() {
   http_response_code "500"
   echo "Internal Server Error"
@@ -131,7 +131,7 @@ Demo: https://bash-status-wwxmmk9wh.now.sh
 ## Redirect
 You can use the http_response_redirect function to set the location and status code. The default status code is 302 temporary redirect but you could use a permanent redirect by setting the second argument to 301.
 
-```
+```bash
 handler() {
   http_response_redirect "https://twitter.com/zeithq" "301"
   echo "Redirecting..."
@@ -145,7 +145,7 @@ Bash, by itself, is not very useful for writing Lambda handler logic because it 
 
 For example, the querystring import may be used to parse input parameters from the request URL:
 
-```
+```bash
 import "querystring@1.3.0"
 
 handler() {
@@ -162,7 +162,7 @@ Demo: https://bash-querystring-fommsvjvs.now.sh/?a=b
 ## Bash Version
 With the Bash Builder, the handler script is executed using GNU Bash 4.
 
-```
+```bash
 handler() {
   bash --version
 }

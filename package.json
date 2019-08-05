@@ -5,11 +5,10 @@
   "main": "index.js",
   "author": "Nathan Rajlich <nate@zeit.co>",
   "license": "MIT",
-  "homepage": "https://zeit.co/docs/v2/deployments/official-builders/bash-now-bash",
+  "homepage": "https://github.com/importpw/now-builder",
   "repository": {
     "type": "git",
-    "url": "https://github.com/zeit/now-builders.git",
-    "directory": "packages/now-bash"
+    "url": "https://github.com/importpw/now-builder.git"
   },
   "files": [
     "builder.sh",

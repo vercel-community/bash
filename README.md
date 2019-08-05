@@ -40,10 +40,13 @@ A shell function that takes querystrings and prints them as uppercase.
 
 The final step is to define a build that will take this entrypoint (index.sh), build it, and turn it into a lambda using a now.json configuration in the root directory (my-bash-project):
 
+```
 {
   "version": 2,
   "builds": [{ "src": "api/**/index.sh", "use": "now-bash" }]
 }
+```
+
 Import can be configured by adding options to the import property of the config. The IMPORT_ prefix must not be set in this case:
 
 ```

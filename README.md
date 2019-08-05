@@ -17,7 +17,7 @@ This example will detail creating an uppercase endpoint which will be accessed a
 
 Start by creating the project structure:
 
-````
+```
 mkdir -p my-bash-project/api/uppercase
 cd my-bash-project/api/uppercase
 ```

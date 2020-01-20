@@ -72,8 +72,10 @@ exports.build = async ({
   });
 
   return {
-    [entrypoint]: lambda,
+    output: lambda
   };
 };
 
 exports.shouldServe = shouldServe;
+
+exports.version = 3;

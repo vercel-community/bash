@@ -1,7 +1,7 @@
 {
   "name": "now-bash",
   "version": "1.0.3",
-  "description": "Now 2.0 builder for HTTP endpoints written in Bash",
+  "description": "Now v2 Builder for Bash Serverless Functions",
   "main": "index.js",
   "author": "Nathan Rajlich <nate@zeit.co>",
   "license": "MIT",

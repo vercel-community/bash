@@ -1,0 +1,5 @@
+{
+  "functions": {
+    "api/*.sh": { "runtime": "https://files-d07fn4zif.n8.io" }
+  }
+}

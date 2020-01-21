@@ -43,7 +43,9 @@ The final step is to define a build that will take this entrypoint (index.sh), b
 ```json
 {
   "version": 2,
-  "builds": [{ "src": "api/**/index.sh", "use": "now-bash" }]
+  "functions": {
+    "api/*.sh": { "runtime": "now-bash@2.0.0" }
+  }
 }
 ```
 
@@ -52,17 +54,16 @@ Import can be configured by adding options to the import property of the config.
 ```json
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "api/**/index.sh",
-      "use": "now-bash",
+  "functions": {
+    "api/*.sh": {
+      "runtime": "now-bash@2.0.0",
       "config": {
         "import": {
           "DEBUG": "1"
         }
       }
     }
-  ]
+  }
 }
 ```
 

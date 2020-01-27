@@ -12,11 +12,7 @@
     "url": "https://github.com/importpw/now-builder.git"
   },
   "files": [
-    "builder.sh",
-    "runtime.sh",
-    "bootstrap",
-    "index.js",
-    "package.json"
+    "dist"
   ],
   "dependencies": {
     "execa": "4",
@@ -43,7 +39,7 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "tsc",
-    "postbuild": "cpy --parents src '!**/*.ts' dist",
+    "postbuild": "cpy src '!**/*.ts' dist",
     "prepublishOnly": "npm run build"
   }
 }

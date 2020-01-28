@@ -15,7 +15,7 @@
     "dist"
   ],
   "dependencies": {
-    "execa": "4",
+    "execa": "1",
     "snake-case": "3"
   },
   "devDependencies": {

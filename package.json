@@ -2,7 +2,8 @@
   "name": "now-bash",
   "version": "2.0.0",
   "description": "Now v2 Builder for Bash Serverless Functions",
-  "main": "index.js",
+  "main": "dist/index",
+  "types": "dist/index",
   "author": "Nathan Rajlich <nate@zeit.co>",
   "license": "MIT",
   "homepage": "https://github.com/importpw/now-builder",
@@ -11,17 +12,34 @@
     "url": "https://github.com/importpw/now-builder.git"
   },
   "files": [
-    "builder.sh",
-    "runtime.sh",
-    "bootstrap",
-    "index.js",
-    "package.json"
+    "dist"
   ],
   "dependencies": {
-    "execa": "^1.0.0",
-    "snake-case": "^2.1.0"
+    "execa": "1",
+    "snake-case": "3"
+  },
+  "devDependencies": {
+    "@now/build-utils": "^1.3.6",
+    "@now/frameworks": "^0.0.7",
+    "@now/routing-utils": "^1.5.1",
+    "@types/node": "^12.12.17",
+    "@typescript-eslint/eslint-plugin": "1.6.0",
+    "@typescript-eslint/parser": "1.1.0",
+    "cpy-cli": "^2.0.0",
+    "eslint": "5.16.0",
+    "eslint-config-airbnb": "17.1.0",
+    "eslint-config-prettier": "4.1.0",
+    "eslint-import-resolver-typescript": "1.1.1",
+    "eslint-plugin-import": "2.16.0",
+    "eslint-plugin-jsx-a11y": "6.2.1",
+    "eslint-plugin-react": "7.12.4",
+    "rimraf": "^3.0.0",
+    "typescript": "^3.5.3"
   },
   "scripts": {
-    "test": "jest"
+    "prebuild": "rimraf dist",
+    "build": "tsc",
+    "postbuild": "cpy src '!**/*.ts' dist",
+    "prepublishOnly": "npm run build"
   }
 }

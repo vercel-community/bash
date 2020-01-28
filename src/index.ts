@@ -33,15 +33,14 @@ export async function build({
 	files,
 	entrypoint,
 	meta,
-	config
+	config = {}
 }: BuildOptions) {
 	const configEnv: Env = {};
-	const distPath = join(workPath, 'dist');
+	const distPath = join(workPath, '.now', 'dist', entrypoint);
 	await download(files, workPath, meta);
 
 	for (const [key, val] of Object.entries(config)) {
 		const name = snakeCase(key).toUpperCase();
-
 		if (typeof val === 'string' && allowedConfigImports.has(name)) {
 			configEnv[`IMPORT_${name}`] = val;
 		}

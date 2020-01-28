@@ -1,11 +1,7 @@
 {
+  "public": true,
   "version": 2,
   "builds": [
-    { "src": "index.sh", "use": "@now/bash" },
-    { "src": "subdirectory/index.sh", "use": "@now/bash" }
-  ],
-  "probes": [
-    { "path": "/", "mustContain": "cow:RANDOMNESS_PLACEHOLDER" },
-    { "path": "/subdirectory/", "mustContain": "yoda:RANDOMNESS_PLACEHOLDER" }
+    { "src": "**/*.sh", "use": "now-bash" }
   ]
 }

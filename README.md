@@ -1,8 +1,7 @@
-# Bash Builder (`now-bash`)
+# Verecl Bash Runtime (`vercel-bash`)
 
-*Status*: Alpha
-
-The Bash Builder takes an entrypoint of a bash function, imports its dependencies, and bundles them into a Lambda.
+The Bash Builder takes an entrypoint of a Bash function, imports its
+dependencies, and bundles them into a Lambda.
 
 A simple "hello world" example:
 
@@ -12,17 +11,23 @@ handler() {
 }
 ```
 
+
 ## Usage
-This example will detail creating an uppercase endpoint which will be accessed as my-deployment.url/api/uppercase. This endpoint will convert the provided querystring to uppercase using only Bash functions and standard Unix CLI tools.
+
+This example will detail creating an uppercase endpoint which will be accessed
+as https://my-deployment.url/api/uppercase. This endpoint will convert the
+provided querystring to uppercase using only Bash functions and standard Unix
+CLI tools.
 
 Start by creating the project structure:
 
-```
+```bash
 mkdir -p my-bash-project/api/uppercase
 cd my-bash-project/api/uppercase
 ```
 
-Inside the my-bash-project > api > uppercase directory, create an index.sh file with the following contents:
+Inside the `my-bash-project/api/uppercase` directory, create an `index.sh` file
+with the following contents:
 
 ```bash
 import "string@0.0.1"
@@ -36,27 +41,28 @@ handler() {
 }
 ```
 
-A shell function that takes querystrings and prints them as uppercase.
-
-The final step is to define a build that will take this entrypoint (index.sh), build it, and turn it into a lambda using a now.json configuration in the root directory (my-bash-project):
+The final step is to define a build that will take this entrypoint (`index.sh`),
+build it, and turn it into a serverless function using a `vercel.json`
+configuration in the root directory (`my-bash-project`):
 
 ```json
 {
   "version": 2,
   "functions": {
-    "api/*.sh": { "runtime": "now-bash@2.0.0" }
+    "api/*.sh": { "runtime": "vercel-bash@3.0.0" }
   }
 }
 ```
 
-Import can be configured by adding options to the import property of the config. The IMPORT_ prefix must not be set in this case:
+Import can be configured by adding options to the import property of the config.
+The `IMPORT_` prefix must not be set in this case:
 
 ```json
 {
   "version": 2,
   "functions": {
     "api/*.sh": {
-      "runtime": "now-bash@2.0.0",
+      "runtime": "vercel-bash@2.0.0",
       "config": {
         "import": {
           "DEBUG": "1"
@@ -67,8 +73,6 @@ Import can be configured by adding options to the import property of the config.
 }
 ```
 
-A now.json file using a build which takes a shell file and uses the Bash Builder to output a lambda.
-
 The resulting deployment can be seen here: https://bash-o54wu79wa.now.sh/
 
 Note, however, that it will return an empty response without a querystring.
@@ -76,9 +80,12 @@ Note, however, that it will return an empty response without a querystring.
 By passing in a querystring, the lambda will return the uppercased version. For example: https://bash-o54wu79wa.now.sh/api/uppercase?hello%20world
 
 ## Build Logic
-If your Lambda requires additional resources to be added into the final bundle, an optional build() function may be defined.
 
-Any files added to the current working directory at build-time will be included in the output Lambda.
+If your serverless function requires additional files to be added into the
+final bundle, an optional `build()` function may be defined.
+
+Any files added to the current working directory at build-time will be included
+in the output serverless function.
 
 ```bash
 build() {
@@ -94,7 +101,9 @@ handler() {
 Demo: https://bash-build-j3adniz41.now.sh/
 
 ## Response Headers
-The default Content-Type is text/plain; charset=utf8 but you can change it by setting a response header.
+
+The default `Content-Type` is `text/plain; charset=utf8` but you can change it by
+setting a response header.
 
 ```bash
 handler() {
@@ -106,7 +115,10 @@ handler() {
 Demo: https://bash-html-8vveguuqn.now.sh
 
 ## JSON Response
-It is common for serverless functions to communicate via JSON so you can use the http_response_json function to set the content type to application/json; charset=utf8.
+
+It is common for serverless functions to communicate via JSON, so you can use the
+`http_response_json` function to set the `Content-Type` to `application/json;
+charset=utf8`.
 
 ```bash
 handler() {
@@ -118,11 +130,13 @@ handler() {
 Demo: https://bash-json-ffsi051oy.now.sh
 
 ## Status Code
-The default status code is 200 but you can change it with the http_response_code method.
+
+The default status code is `200` but you can change it with the
+`http_response_code` function.
 
 ```bash
 handler() {
-  http_response_code "500"
+  http_response_code 500
   echo "Internal Server Error"
 }
 ```
@@ -130,11 +144,15 @@ handler() {
 Demo: https://bash-status-wwxmmk9wh.now.sh
 
 ## Redirect
-You can use the http_response_redirect function to set the location and status code. The default status code is 302 temporary redirect but you could use a permanent redirect by setting the second argument to 301.
+
+You can use the `http_response_redirect` function to set the location and,
+optionally, the status code. The default status code is `302` (temporary
+redirect) but you could use a permanent redirect by setting the second argument
+to `301`.
 
 ```bash
 handler() {
-  http_response_redirect "https://twitter.com/zeithq" "301"
+  http_response_redirect "https://twitter.com/vercel" 301
   echo "Redirecting..."
 }
 ```
@@ -142,9 +160,14 @@ handler() {
 Demo: https://bash-redirect-bmxccvg7c.now.sh
 
 ## Importing Dependencies
-Bash, by itself, is not very useful for writing Lambda handler logic because it does not have a standard library. For this reason, import is installed and configured by default, which allows your script to easily include additional functionality and helper logic.
 
-For example, the querystring import may be used to parse input parameters from the request URL:
+Bash, by itself, is not very useful for writing serverless function handler logic
+because it does not have a standard library. For this reason,
+[`import`](https://import.pw) is installed and configured by default, which allows
+your script to easily include additional functionality and helper logic.
+
+For example, the querystring import may be used to parse input parameters from
+the request URL:
 
 ```bash
 import "querystring@1.3.0"
@@ -161,6 +184,7 @@ handler() {
 Demo: https://bash-querystring-fommsvjvs.now.sh/?a=b
 
 ## Bash Version
+
 With the Bash Builder, the handler script is executed using GNU Bash 4.
 
 ```bash

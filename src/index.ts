@@ -9,7 +9,7 @@ import {
 	download,
 	createLambda,
 	shouldServe
-} from '@now/build-utils';
+} from '@vercel/build-utils';
 
 // From this list: https://import.pw/importpw/import/docs/config.md
 const allowedConfigImports = new Set([

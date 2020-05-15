@@ -2,6 +2,6 @@
   "public": true,
   "version": 2,
   "builds": [
-    { "src": "**/*.sh", "use": "now-bash" }
+    { "src": "**/*.sh", "use": "vercel-bash" }
   ]
 }

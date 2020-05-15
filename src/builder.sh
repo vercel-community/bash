@@ -19,7 +19,7 @@ cp "$BUILDER/runtime.sh" "$IMPORT_CACHE"
 cp "$BUILDER/bootstrap" "$DIST"
 
 # Load `import`
-. "$(which import)"
+. "$(command -v import)"
 
 # Cache runtime and user dependencies
 echo "Caching imports in \"$ENTRYPOINT\"…"

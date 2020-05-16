@@ -51,7 +51,7 @@ configuration in the root directory (`my-bash-project`):
 {
   "version": 2,
   "functions": {
-    "api/*.sh": { "runtime": "vercel-bash@3.0.3" }
+    "api/*.sh": { "runtime": "vercel-bash@3.0.4" }
   }
 }
 ```
@@ -64,7 +64,7 @@ The `IMPORT_` prefix must not be set in this case:
   "version": 2,
   "functions": {
     "api/*.sh": {
-      "runtime": "vercel-bash@3.0.3",
+      "runtime": "vercel-bash@3.0.4",
       "config": {
         "import": {
           "DEBUG": "1"

@@ -109,7 +109,7 @@ http_response_header() {
 	jq \
 		--arg name "$name" \
 		--arg value "$value" \
-		'.[$name] = $value' < "$_HEADERS" > "$tmp"
+		'.[$name | ascii_downcase] = $value' < "$_HEADERS" > "$tmp"
 	mv -f "$tmp" "$_HEADERS"
 }
 

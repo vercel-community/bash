@@ -123,7 +123,7 @@ charset=utf8`.
 ```bash
 handler() {
   http_response_json
-  echo "{ "title": "Current time", "body": "$(date)" }"
+  echo "{ \"title\": \"Current time\", \"body\": \"$(date)\" }"
 }
 ```
 

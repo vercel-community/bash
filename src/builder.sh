@@ -7,8 +7,13 @@ export IMPORT_DEBUG=1
 # Install `import`
 IMPORT_BIN="$IMPORT_CACHE/bin/import"
 mkdir -p "$(dirname "$IMPORT_BIN")"
-curl -sfLS https://import.pw > "$IMPORT_BIN"
+curl -sfLS "https://import.pw" > "$IMPORT_BIN"
 chmod +x "$IMPORT_BIN"
+
+# Install `curl`
+IMPORT_CURL="$IMPORT_CACHE/bin/curl"
+curl -sfLS "https://github.com/dtschan/curl-static/releases/download/v7.63.0/curl" > "$IMPORT_CURL"
+chmod +x "$IMPORT_CURL"
 
 # For now only the entrypoint file is copied into the lambda
 mkdir -p "$(dirname "$DIST/$ENTRYPOINT")"

@@ -32,11 +32,13 @@ export async function build({
 	workPath,
 	files,
 	entrypoint,
-	meta,
+	meta = {},
 	config = {}
 }: BuildOptions) {
 	const configEnv: Env = {};
-	const distPath = join(workPath, '.now', 'dist', entrypoint);
+	const { devCacheDir = join(workPath, '.now', 'cache') } = meta;
+	const distPath = join(devCacheDir, 'bash', entrypoint);
+
 	await download(files, workPath, meta);
 
 	for (const [key, val] of Object.entries(config)) {
@@ -66,7 +68,7 @@ export async function build({
 
 	const builderPath = join(__dirname, 'builder.sh');
 
-	await execa(builderPath, [entrypoint], {
+	await execa(builderPath, [], {
 		env,
 		cwd: workPath,
 		stdio: 'inherit'

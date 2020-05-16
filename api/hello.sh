@@ -1,3 +1,3 @@
 handler() {
-  echo "Hello, from Bash!"
+	echo "Hello, from $(bash --version | head -n1)"
 }

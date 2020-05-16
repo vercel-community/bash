@@ -1,3 +1,3 @@
 handler() {
-  bash --version
+	bash --version
 }

@@ -7,7 +7,7 @@ A simple "hello world" example:
 
 ```bash
 handler() {
-  echo "Hello, from Bash!"
+	echo "Hello, from $(bash --version | head -n1)"
 }
 ```
 
@@ -36,10 +36,10 @@ import "string@0.0.1"
 import "querystring@1.3.0"
 
 handler() {
-  local path
-  local query
-  path="$(jq -r '.path' < "$1")"
-  querystring "$path" | querystring_unescape | string_upper
+	local path
+	local query
+	path="$(jq -r '.path' < "$1")"
+	querystring "$path" | querystring_unescape | string_upper
 }
 ```
 
@@ -49,10 +49,10 @@ configuration in the root directory (`my-bash-project`):
 
 ```json
 {
-  "version": 2,
-  "functions": {
-    "api/*.sh": { "runtime": "vercel-bash@3.0.4" }
-  }
+	"version": 2,
+	"functions": {
+		"api/*.sh": { "runtime": "vercel-bash@3.0.4" }
+	}
 }
 ```
 
@@ -61,17 +61,17 @@ The `IMPORT_` prefix must not be set in this case:
 
 ```json
 {
-  "version": 2,
-  "functions": {
-    "api/*.sh": {
-      "runtime": "vercel-bash@3.0.4",
-      "config": {
-        "import": {
-          "DEBUG": "1"
-        }
-      }
-    }
-  }
+	"version": 2,
+	"functions": {
+		"api/*.sh": {
+			"runtime": "vercel-bash@3.0.4",
+			"config": {
+				"import": {
+					"DEBUG": "1"
+				}
+			}
+		}
+	}
 }
 ```
 
@@ -89,12 +89,12 @@ in the output serverless function.
 
 ```bash
 build() {
-  date > build-time.txt
+	date > build-time.txt
 }
 
 handler() {
-  echo "Build time:   $(cat build-time.txt)"
-  echo "Current time: $(date)"
+	echo "Build time:   $(cat build-time.txt)"
+	echo "Current time: $(date)"
 }
 ```
 
@@ -107,8 +107,8 @@ setting a response header.
 
 ```bash
 handler() {
-  http_response_header "Content-Type" "text/html; charset=utf8"
-  echo "<h1>Current time</h1><p>$(date)</p>"
+	http_response_header "Content-Type" "text/html; charset=utf8"
+	echo "<h1>Current time</h1><p>$(date)</p>"
 }
 ```
 
@@ -122,8 +122,8 @@ charset=utf8`.
 
 ```bash
 handler() {
-  http_response_json
-  echo "{ \"title\": \"Current time\", \"body\": \"$(date)\" }"
+	http_response_json
+	echo "{ \"title\": \"Current time\", \"body\": \"$(date)\" }"
 }
 ```
 
@@ -136,8 +136,8 @@ The default status code is `200` but you can change it with the
 
 ```bash
 handler() {
-  http_response_code 500
-  echo "Internal Server Error"
+	http_response_code 500
+	echo "Internal Server Error from Bash!"
 }
 ```
 
@@ -152,8 +152,8 @@ to `301`.
 
 ```bash
 handler() {
-  http_response_redirect "https://twitter.com/vercel" 301
-  echo "Redirecting..."
+	http_response_redirect "https://twitter.com/vercel" 301
+	echo "Redirecting..."
 }
 ```
 
@@ -173,11 +173,11 @@ the request URL:
 import "querystring@1.3.0"
 
 handler() {
-  local path
-  local query
-  path="$(jq -r '.path' < "$1")"
-  query="$(querystring "$path")"
-  echo "Querystring is: $query"
+	local path
+	local query
+	path="$(jq -r '.path' < "$1")"
+	query="$(querystring "$path")"
+	echo "Querystring is: $query"
 }
 ```
 
@@ -189,7 +189,7 @@ With the Bash Builder, the handler script is executed using GNU Bash 4.
 
 ```bash
 handler() {
-  bash --version
+	bash --version
 }
 ```
 

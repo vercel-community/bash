@@ -1,0 +1,3 @@
+handler() {
+  bash --version
+}

@@ -11,6 +11,8 @@ handler() {
 }
 ```
 
+**Demo:** https://vercel.import.pw/api/hello
+
 
 ## Usage
 
@@ -73,11 +75,9 @@ The `IMPORT_` prefix must not be set in this case:
 }
 ```
 
-The resulting deployment can be seen here: https://bash-o54wu79wa.now.sh/
+By passing in a querystring, the lambda will return the uppercased version.
 
-Note, however, that it will return an empty response without a querystring.
-
-By passing in a querystring, the lambda will return the uppercased version. For example: https://bash-o54wu79wa.now.sh/api/uppercase?hello%20world
+**Demo:** https://vercel.import.pw/api/uppercase?hello%20world
 
 ## Build Logic
 
@@ -98,7 +98,7 @@ handler() {
 }
 ```
 
-Demo: https://bash-build-j3adniz41.now.sh/
+**Demo:** https://vercel.import.pw/api/build
 
 ## Response Headers
 
@@ -112,7 +112,7 @@ handler() {
 }
 ```
 
-Demo: https://bash-html-8vveguuqn.now.sh
+**Demo:** https://vercel.import.pw/api/response-headers
 
 ## JSON Response
 
@@ -127,7 +127,7 @@ handler() {
 }
 ```
 
-Demo: https://bash-json-ffsi051oy.now.sh
+**Demo:** https://vercel.import.pw/api/response-json
 
 ## Status Code
 
@@ -141,7 +141,7 @@ handler() {
 }
 ```
 
-Demo: https://bash-status-wwxmmk9wh.now.sh
+**Demo:** https://vercel.import.pw/api/response-status-code
 
 ## Redirect
 
@@ -157,7 +157,7 @@ handler() {
 }
 ```
 
-Demo: https://bash-redirect-bmxccvg7c.now.sh
+**Demo:** https://vercel.import.pw/api/redirect
 
 ## Importing Dependencies
 
@@ -181,7 +181,7 @@ handler() {
 }
 ```
 
-Demo: https://bash-querystring-fommsvjvs.now.sh/?a=b
+**Demo:** https://vercel.import.pw/api/querystring?a=b
 
 ## Bash Version
 
@@ -192,4 +192,5 @@ handler() {
   bash --version
 }
 ```
-Demo: https://bash-version-rkb5w4ua6.now.sh/
+
+**Demo:** https://vercel.import.pw/api/bash-version

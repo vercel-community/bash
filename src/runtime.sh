@@ -1,7 +1,9 @@
 #!/bin/bash
 # The static `curl` binary we download for AWS Lambda has the incorrect
-# location for the SSL Certs CA, so set the proper location in prod
-export CURL_CA_BUNDLE="/etc/ssl/certs/ca-bundle.crt"
+# location for the SSL Certs CA, so set the proper location in production
+if [ "${VERCEL_REGION-}" != "dev1"; then
+	export CURL_CA_BUNDLE="/etc/ssl/certs/ca-bundle.crt"
+fi
 
 import "static-binaries@1.0.0"
 static_binaries jq

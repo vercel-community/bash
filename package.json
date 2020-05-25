@@ -14,6 +14,12 @@
   "files": [
     "dist"
   ],
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "tsc",
+    "postbuild": "cpy src '!**/*.ts' dist",
+    "prepublishOnly": "npm run build"
+  },
   "dependencies": {
     "execa": "4",
     "snake-case": "3"
@@ -35,11 +41,5 @@
     "eslint-plugin-react": "7.12.4",
     "rimraf": "^3.0.0",
     "typescript": "^3.5.3"
-  },
-  "scripts": {
-    "prebuild": "rimraf dist",
-    "build": "tsc",
-    "postbuild": "cpy src '!**/*.ts' dist",
-    "prepublishOnly": "npm run build"
   }
 }

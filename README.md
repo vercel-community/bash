@@ -1,4 +1,4 @@
-# Verecl Bash Runtime (`vercel-bash`)
+# Vercel Bash Runtime (`vercel-bash`)
 
 The Bash Builder takes an entrypoint of a Bash function, imports its
 dependencies, and bundles them into a Lambda.

@@ -1,4 +1,4 @@
-# Verecl Bash Runtime (`vercel-bash`)
+# Vercel Bash Runtime (`vercel-bash`)
 
 [<img src="https://assets.vercel.com/image/upload/v1588805858/repositories/vercel/logo.png" height="96"><img src="https://raw.githubusercontent.com/odb/official-bash-logo/master/assets/Logos/Icons/SVG/128x128.svg" height="103" />](https://github.com/importpw/vercel-bash)
 

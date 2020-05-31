@@ -3,7 +3,7 @@
 # Vercel Bash Runtime (`vercel-bash`)
 
 The Bash Builder takes an entrypoint of a Bash function, imports its
-dependencies, and bundles them into a Lambda.
+dependencies, and bundles them into a serverless function.
 
 A simple "hello world" example:
 
@@ -76,7 +76,7 @@ The `IMPORT_` prefix must not be set in this case:
 }
 ```
 
-By passing in a querystring, the lambda will return the uppercased version.
+By passing in a querystring, the endpoint will return the uppercased version.
 
 **Demo:** https://vercel.import.pw/api/uppercase?hello%20world
 

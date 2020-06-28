@@ -1,3 +1,4 @@
+import fs from 'fs';
 import execa from 'execa';
 import { join } from 'path';
 import { snakeCase } from 'snake-case';
@@ -10,6 +11,11 @@ import {
 	createLambda,
 	shouldServe
 } from '@vercel/build-utils';
+
+// `chmod()` is required for usage with `vercel-dev-runtime`
+// since file mode is not preserved in Vercel deployments.
+fs.chmodSync(join(__dirname, 'build.sh'), 0o755);
+fs.chmodSync(join(__dirname, 'bootstrap'), 0o755);
 
 // From this list: https://import.pw/importpw/import/docs/config.md
 const allowedConfigImports = new Set([
@@ -66,7 +72,7 @@ export async function build({
 		ENTRYPOINT: entrypoint
 	};
 
-	const builderPath = join(__dirname, 'builder.sh');
+	const builderPath = join(__dirname, 'build.sh');
 
 	await execa(builderPath, [], {
 		env,

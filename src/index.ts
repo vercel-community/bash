@@ -42,7 +42,7 @@ export async function build({
 	config = {}
 }: BuildOptions) {
 	const configEnv: Env = {};
-	const { devCacheDir = join(workPath, '.now', 'cache') } = meta;
+	const { devCacheDir = join(workPath, '.vercel', 'cache') } = meta;
 	const distPath = join(devCacheDir, 'bash', entrypoint);
 
 	await download(files, workPath, meta);

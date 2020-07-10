@@ -54,15 +54,15 @@ export async function build({
 		}
 	}
 
-	if (config && config.import) {
+	if (config?.import) {
 		for (const key of Object.keys(config.import)) {
 			const name = snakeCase(key).toUpperCase();
 			configEnv[`IMPORT_${name}`] = config.import[key];
 		}
 	}
 
-	const IMPORT_CACHE = `${distPath}/.import-cache`;
-	const env = {
+	const IMPORT_CACHE = join(distPath, '.import-cache');
+	const env: Env = {
 		...process.env,
 		...configEnv,
 		PATH: `${IMPORT_CACHE}/bin:${process.env.PATH}`,
@@ -72,15 +72,13 @@ export async function build({
 		ENTRYPOINT: entrypoint
 	};
 
-	const builderPath = join(__dirname, 'build.sh');
-
-	await execa(builderPath, [], {
+	await execa(join(__dirname, 'build.sh'), [], {
 		env,
 		cwd: workPath,
 		stdio: 'inherit'
 	});
 
-	const lambda = await createLambda({
+	const output = await createLambda({
 		files: await glob('**', distPath),
 		handler: entrypoint, // not actually used in `bootstrap`
 		runtime: 'provided',
@@ -90,7 +88,5 @@ export async function build({
 		}
 	});
 
-	return {
-		output: lambda
-	};
+	return { output };
 }

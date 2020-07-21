@@ -13,7 +13,7 @@ chmod +x "$IMPORT_BIN"
 echo "Done installing \`import\`"
 
 # Install static `curl` binary for production
-if [ "${VERCEL_REGION-}" != "dev1" ]; then
+if [ "${VERCEL_DEV-}" != "1" ]; then
 	IMPORT_CURL="$IMPORT_CACHE/bin/curl"
 	echo "Installing static \`curl\` binary to \"$IMPORT_CURL\"…"
 	curl -sfLS "https://github.com/dtschan/curl-static/releases/download/v7.63.0/curl" > "$IMPORT_CURL"

@@ -69,7 +69,8 @@ export async function build({
 		IMPORT_CACHE,
 		DIST: distPath,
 		BUILDER: __dirname,
-		ENTRYPOINT: entrypoint
+		ENTRYPOINT: entrypoint,
+		VERCEL_DEV: meta.isDev ? '1' : '0'
 	};
 
 	await execa(join(__dirname, 'build.sh'), [], {

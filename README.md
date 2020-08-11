@@ -1,6 +1,4 @@
-[<img src="https://assets.vercel.com/image/upload/v1588805858/repositories/vercel/logo.png" height="96"><img src="https://raw.githubusercontent.com/odb/official-bash-logo/master/assets/Logos/Icons/SVG/128x128.svg" height="103" />](https://github.com/importpw/vercel-bash)
-
-# Vercel Bash Runtime (`vercel-bash`)
+[<img src="https://og-image.now.sh/**vercel-bash**.png?theme=light&md=1&fontSize=100px&images=https%3A%2F%2Fassets.vercel.com%2Fimage%2Fupload%2Ffront%2Fassets%2Fdesign%2Fvercel-triangle-black.svg&images=https%3A%2F%2Fbashlogo.com%2Fimg%2Fsymbol%2Fsvg%2Ffull_colored_dark.svg&widths=184&widths=250&heights=160&heights=250" />](https://github.com/importpw/vercel-bash)
 
 The Bash Builder takes an entrypoint of a Bash function, imports its
 dependencies, and bundles them into a serverless function.

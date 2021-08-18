@@ -3,7 +3,6 @@ import execa from 'execa';
 import { join } from 'path';
 import { snakeCase } from 'snake-case';
 import {
-	AnalyzeOptions,
 	BuildOptions,
 	Env,
 	glob,
@@ -29,10 +28,6 @@ const allowedConfigImports = new Set([
 export const version = 3;
 
 export { shouldServe };
-
-export function analyze({ files, entrypoint }: AnalyzeOptions) {
-	return files[entrypoint].digest;
-}
 
 export async function build({
 	workPath,

@@ -16,7 +16,7 @@ import {
 fs.chmodSync(join(__dirname, 'build.sh'), 0o755);
 fs.chmodSync(join(__dirname, 'bootstrap'), 0o755);
 
-// From this list: https://import.pw/importpw/import/docs/config.md
+// From this list: https://import.sh/docs/config
 const allowedConfigImports = new Set([
 	'CACHE',
 	'CURL_OPTS',

@@ -8,7 +8,7 @@ export IMPORT_DEBUG=1
 IMPORT_BIN="$IMPORT_CACHE/bin/import"
 echo "Installing \`import\` to \"$IMPORT_BIN\"…"
 mkdir -p "$(dirname "$IMPORT_BIN")"
-curl -sfLS "https://import.pw" > "$IMPORT_BIN"
+curl -sfLS "https://import.sh" > "$IMPORT_BIN"
 chmod +x "$IMPORT_BIN"
 echo "Done installing \`import\`"
 

@@ -162,7 +162,7 @@ handler() {
 
 Bash, by itself, is not very useful for writing serverless function handler logic
 because it does not have a standard library. For this reason,
-[`import`](https://import.pw) is installed and configured by default, which allows
+[`import`](https://import.sh) is installed and configured by default, which allows
 your script to easily include additional functionality and helper logic.
 
 For example, the querystring import may be used to parse input parameters from

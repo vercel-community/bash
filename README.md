@@ -11,7 +11,7 @@ handler() {
 }
 ```
 
-**Demo:** https://vercel.import.pw/api/hello
+**Demo:** https://vercel.import.sh/api/hello
 
 
 ## Usage
@@ -76,7 +76,7 @@ The `IMPORT_` prefix must not be set in this case:
 
 By passing in a querystring, the endpoint will return the uppercased version.
 
-**Demo:** https://vercel.import.pw/api/uppercase?hello%20world
+**Demo:** https://vercel.import.sh/api/uppercase?hello%20world
 
 ## Build Logic
 
@@ -97,7 +97,7 @@ handler() {
 }
 ```
 
-**Demo:** https://vercel.import.pw/api/build
+**Demo:** https://vercel.import.sh/api/build
 
 ## Response Headers
 
@@ -111,7 +111,7 @@ handler() {
 }
 ```
 
-**Demo:** https://vercel.import.pw/api/response-headers
+**Demo:** https://vercel.import.sh/api/response-headers
 
 ## JSON Response
 
@@ -126,7 +126,7 @@ handler() {
 }
 ```
 
-**Demo:** https://vercel.import.pw/api/response-json
+**Demo:** https://vercel.import.sh/api/response-json
 
 ## Status Code
 
@@ -140,7 +140,7 @@ handler() {
 }
 ```
 
-**Demo:** https://vercel.import.pw/api/response-status-code
+**Demo:** https://vercel.import.sh/api/response-status-code
 
 ## Redirect
 
@@ -156,7 +156,7 @@ handler() {
 }
 ```
 
-**Demo:** https://vercel.import.pw/api/redirect
+**Demo:** https://vercel.import.sh/api/redirect
 
 ## Importing Dependencies
 
@@ -180,7 +180,7 @@ handler() {
 }
 ```
 
-**Demo:** https://vercel.import.pw/api/querystring?a=b
+**Demo:** https://vercel.import.sh/api/querystring?a=b
 
 ## Bash Version
 
@@ -192,4 +192,4 @@ handler() {
 }
 ```
 
-**Demo:** https://vercel.import.pw/api/bash-version
+**Demo:** https://vercel.import.sh/api/bash-version

@@ -12,32 +12,10 @@ curl -sfLS "https://import.sh" > "$IMPORT_BIN"
 chmod +x "$IMPORT_BIN"
 echo "Done installing \`import\`"
 
-# Install static `curl` binary for production
-if [ "${VERCEL_DEV-}" != "1" ]; then
-	IMPORT_CURL="$IMPORT_CACHE/bin/curl"
-	echo "Installing static \`curl\` binary to \"$IMPORT_CURL\"…"
-	curl -sfLS "https://github.com/dtschan/curl-static/releases/download/v7.63.0/curl" > "$IMPORT_CURL"
-	chmod +x "$IMPORT_CURL"
-	echo "Done installing \`curl\`"
-fi
-
-# For now only the entrypoint file is copied into the lambda
-mkdir -p "$(dirname "$DIST/$ENTRYPOINT")"
-cp "$ENTRYPOINT" "$DIST/$ENTRYPOINT"
-
-cd "$DIST"
-
-# Copy in the runtime
-cp "$BUILDER/runtime.sh" "$IMPORT_CACHE"
-cp "$BUILDER/bootstrap" "$DIST"
-
-# Load `import`
-. "$(command -v import)"
-
 # Cache runtime and user dependencies
 echo "Caching imports in \"$ENTRYPOINT\"…"
-. "$IMPORT_CACHE/runtime.sh"
-. "$DIST/$ENTRYPOINT"
+. "$IMPORT_BIN"
+. "$WORK_PATH/$ENTRYPOINT"
 echo "Done caching imports"
 
 # Ensure the entrypoint defined a `handler` function

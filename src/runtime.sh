@@ -5,20 +5,17 @@ if [ -e "/etc/ssl/certs/ca-bundle.crt" ]; then
 	export CURL_CA_BUNDLE="/etc/ssl/certs/ca-bundle.crt"
 fi
 
-import "static-binaries@1.0.0"
-static_binaries jq
-
 # These get reset upon each request
 _STATUS_CODE="$(mktemp)"
 _HEADERS="$(mktemp)"
 
-_lambda_runtime_api() {
+_vercel_bash_runtime_api() {
 	local endpoint="$1"
 	shift
 	curl -sfLS "http://$AWS_LAMBDA_RUNTIME_API/2018-06-01/runtime/$endpoint" "$@"
 }
 
-_lambda_runtime_init() {
+_vercel_bash_runtime_init() {
 	# Initialize user code
 	# shellcheck disable=SC1090
 	. "$SCRIPT_FILENAME" || {
@@ -26,15 +23,15 @@ _lambda_runtime_init() {
 		local error_message="Initialization failed for '$SCRIPT_FILENAME' (exit code $exit_code)"
 		echo "$error_message" >&2
 		local error='{"errorMessage":"'"$error_message"'"}'
-		_lambda_runtime_api "init/error" -X POST -d "$error"
+		_vercel_bash_runtime_api "init/error" -X POST -d "$error"
 		exit "$exit_code"
 	}
 
 	# Process events
-	while true; do _lambda_runtime_next; done
+	while true; do _vercel_bash_runtime_next; done
 }
 
-_lambda_runtime_next() {
+_vercel_bash_runtime_next() {
 	echo 200 > "$_STATUS_CODE"
 	echo '{"content-type":"text/plain; charset=utf8"}' > "$_HEADERS"
 
@@ -44,7 +41,7 @@ _lambda_runtime_next() {
 	# Get an event
 	local event
 	event="$(mktemp)"
-	_lambda_runtime_api invocation/next -D "$headers" | jq --raw-output --monochrome-output '.body' > "$event"
+	_vercel_bash_runtime_api invocation/next -D "$headers" | jq --raw-output --monochrome-output '.body' > "$event"
 
 	local request_id
 	request_id="$(grep -Fi Lambda-Runtime-Aws-Request-Id "$headers" | tr -d '[:space:]' | cut -d: -f2)"
@@ -60,7 +57,7 @@ _lambda_runtime_next() {
 	local stdin
 	stdin="$(mktemp -u)"
 	mkfifo "$stdin"
-	_lambda_runtime_body < "$event" > "$stdin" &
+	_vercel_bash_runtime_body < "$event" > "$stdin" &
 
 	local exit_code=0
 	handler "$event" < "$stdin" > "$body" || exit_code="$?"
@@ -73,16 +70,16 @@ _lambda_runtime_next() {
 			--arg statusCode "$(cat "$_STATUS_CODE")" \
 			--argjson headers "$(cat "$_HEADERS")" \
 			'{statusCode:$statusCode|tonumber, headers:$headers, encoding:"base64", body:.|@base64}' < "$body" \
-			| _lambda_runtime_api "invocation/$request_id/response" -X POST -d @- > /dev/null
+			| _vercel_bash_runtime_api "invocation/$request_id/response" -X POST -d @- > /dev/null
 		rm -f "$body" "$_HEADERS"
 	else
 		local error_message="Invocation failed for 'handler' function in '$SCRIPT_FILENAME' (exit code $exit_code)"
 		echo "$error_message" >&2
-		_lambda_runtime_api "invocation/$request_id/error" -X POST -d '{"errorMessage":"'"$error_message"'"}' > /dev/null
+		_vercel_bash_runtime_api "invocation/$request_id/error" -X POST -d '{"errorMessage":"'"$error_message"'"}' > /dev/null
 	fi
 }
 
-_lambda_runtime_body() {
+_vercel_bash_runtime_body() {
 	local event
 	event="$(cat)"
 	if [ "$(jq --raw-output '.body | type' <<< "$event")" = "string" ]; then

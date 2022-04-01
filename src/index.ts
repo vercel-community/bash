@@ -5,7 +5,6 @@ import fetch from 'node-fetch';
 import { join, dirname, normalize, relative } from 'path';
 import { snakeCase } from 'snake-case';
 import {
-	Env,
 	FileFsRef,
 	glob,
 	download,
@@ -76,7 +75,7 @@ export const build: BuildV3 = async ({
 	const { devCacheDir = join(workPath, '.vercel', 'cache') } = meta;
 	const importCacheDir = join(devCacheDir, 'bash');
 
-	const configEnv: Env = {};
+	const configEnv: Lambda['environment'] = {};
 	for (const [key, val] of Object.entries(config)) {
 		const name = snakeCase(key).toUpperCase();
 		if (typeof val === 'string' && allowedConfigImports.has(name)) {
@@ -92,15 +91,13 @@ export const build: BuildV3 = async ({
 
 	const IMPORT_TRACE = join(TMP, Math.random().toString(16).substring(2));
 
-	const env: Env = {
+	const env = {
 		...process.env,
 		...configEnv,
 		IMPORT_CACHE: importCacheDir,
 		IMPORT_TRACE,
 		WORK_PATH: workPath,
 		ENTRYPOINT: entrypoint,
-		//DIST: distPath,
-		//VERCEL_DEV: meta.isDev ? '1' : '0'
 	};
 
 	await execa(join(__dirname, 'build.sh'), [], {
@@ -166,10 +163,7 @@ export const build: BuildV3 = async ({
 		files: lambdaFiles,
 		handler: entrypoint,
 		runtime: 'provided',
-		environment: {
-			...configEnv,
-			SCRIPT_FILENAME: entrypoint,
-		},
+		environment: configEnv,
 	});
 
 	return { output };

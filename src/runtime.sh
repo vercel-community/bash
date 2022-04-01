@@ -18,9 +18,9 @@ _vercel_bash_runtime_api() {
 _vercel_bash_runtime_init() {
 	# Initialize user code
 	# shellcheck disable=SC1090
-	. "$SCRIPT_FILENAME" || {
+	. "$_HANDLER" || {
 		local exit_code="$?"
-		local error_message="Initialization failed for '$SCRIPT_FILENAME' (exit code $exit_code)"
+		local error_message="Initialization failed for '$_HANDLER' (exit code $exit_code)"
 		echo "$error_message" >&2
 		local error='{"errorMessage":"'"$error_message"'"}'
 		_vercel_bash_runtime_api "init/error" -X POST -d "$error"
@@ -73,7 +73,7 @@ _vercel_bash_runtime_next() {
 			| _vercel_bash_runtime_api "invocation/$request_id/response" -X POST -d @- > /dev/null
 		rm -f "$body" "$_HEADERS"
 	else
-		local error_message="Invocation failed for 'handler' function in '$SCRIPT_FILENAME' (exit code $exit_code)"
+		local error_message="Invocation failed for 'handler' function in '$_HANDLER' (exit code $exit_code)"
 		echo "$error_message" >&2
 		_vercel_bash_runtime_api "invocation/$request_id/error" -X POST -d '{"errorMessage":"'"$error_message"'"}' > /dev/null
 	fi

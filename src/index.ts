@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs from 'fs-extra';
 import { tmpdir } from 'os';
 import execa from 'execa';
 import fetch from 'node-fetch';
@@ -14,6 +14,8 @@ import {
 	PrepareCache,
 	Files,
 	FileBlob,
+	getWriteableDirectory,
+	streamToBuffer,
 } from '@vercel/build-utils';
 
 const TMP = tmpdir();
@@ -100,22 +102,25 @@ export const build: BuildV3 = async ({
 		ENTRYPOINT: entrypoint,
 	};
 
+	const buildDir = await getWriteableDirectory();
+
 	await execa(join(__dirname, 'build.sh'), [], {
 		env,
-		cwd: workPath,
+		cwd: buildDir,
 		stdio: 'inherit',
 	});
 
-	const trace = await fs.promises
-		.readFile(IMPORT_TRACE, 'utf8')
-		.then((traceFile) => {
-			const trimmed = traceFile.trim();
-			if (!trimmed) return [];
-			return trimmed.split('\n');
-		});
-	fs.promises.unlink(IMPORT_TRACE);
+	const trace = await fs.readFile(IMPORT_TRACE, 'utf8').then((traceFile) => {
+		const trimmed = traceFile.trim();
+		if (!trimmed) return [];
+		return trimmed.split('\n');
+	});
+	fs.remove(IMPORT_TRACE);
 
 	const lambdaFiles: Files = {
+		...(await filesToBlobs(glob('**', buildDir)).finally(() =>
+			fs.remove(buildDir)
+		)),
 		bootstrap: await bootstrapPromise,
 		'.import-cache/runtime.sh': await runtimePromise,
 		'.import-cache/bin/curl': await curlPromise,
@@ -138,16 +143,11 @@ export const build: BuildV3 = async ({
 		lambdaFiles[join('.import-cache/links', urlPath)] = linkFile;
 		lambdaFiles[join('.import-cache/locations', urlPath)] = locationFile;
 
-		const dataPath = join(
-			dirname(linkPath),
-			await fs.promises.readlink(linkPath)
-		);
+		const dataPath = join(dirname(linkPath), await fs.readlink(linkPath));
 		const dataOutputPath = join(
 			'.import-cache',
 			relative(importCacheDir, dataPath)
 		);
-
-		//console.log({ url, urlPath, linkPath, locationPath, dataPath, dataOutputPath });
 
 		if (!lambdaFiles[dataOutputPath]) {
 			lambdaFiles[dataOutputPath] = await FileFsRef.fromFsPath({
@@ -172,3 +172,17 @@ export const build: BuildV3 = async ({
 export const prepareCache: PrepareCache = async ({ workPath }) => {
 	return await glob('.vercel/cache/bash/**', workPath);
 };
+
+async function filesToBlobs(filesPromise: Promise<Files>) {
+	const files = await filesPromise;
+	for (const [name, file] of Object.entries(files)) {
+		const stream = file.toStream();
+		const buffer = await streamToBuffer(stream);
+		files[name] = new FileBlob({
+			mode: file.mode,
+			contentType: file.contentType,
+			data: buffer,
+		});
+	}
+	return files;
+}

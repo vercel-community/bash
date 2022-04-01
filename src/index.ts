@@ -125,9 +125,6 @@ export const build: BuildV3 = async ({
 		'.import-cache/runtime.sh': await runtimePromise,
 		'.import-cache/bin/curl': await curlPromise,
 		'.import-cache/bin/jq': await jqPromise,
-		'.import-cache/bin/import': await FileFsRef.fromFsPath({
-			fsPath: join(importCacheDir, 'bin/import'),
-		}),
 		// For now only the entrypoint file is copied into the lambda
 		[entrypoint]: files[entrypoint],
 	};
@@ -156,8 +153,27 @@ export const build: BuildV3 = async ({
 		}
 	}
 
-	// TODO: trace `bin` dir - for each file - if symlink - verify that it points to one of the
-	// files that's already been traced, if not symlink then include in output
+	// Trace the `bin` dir:
+	//  - if symlink, then include if it points to a traced files
+	//  - if not symlink, then always include in output
+	const binDir = join(importCacheDir, 'bin');
+	const bins = await fs.readdir(binDir);
+	for (const bin of bins) {
+		const binPath = join(binDir, bin);
+		const target = await fs.readlink(binPath).catch((err) => {
+			if (err.code !== "EINVAL") throw err;
+		});
+		if (target) {
+			const rel = relative(importCacheDir, join(binDir, target));
+			if (!lambdaFiles[join(".import-cache", rel)]) {
+				continue;
+			}
+		}
+		lambdaFiles[join(".import-cache/bin", bin)] =
+			await FileFsRef.fromFsPath({
+				fsPath: binPath,
+			});
+	}
 
 	const output = new Lambda({
 		files: lambdaFiles,

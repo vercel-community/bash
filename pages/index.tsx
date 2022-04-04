@@ -9,7 +9,7 @@ export async function getStaticProps() {
 	return { props: { examples } };
 }
 
-export default ({ examples }) => {
+export default function Index ({ examples }) {
 	return (
 		<div>
 			<p>Hello from Bash, powered by Vercel!</p>

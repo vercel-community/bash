@@ -104,7 +104,7 @@ export const build: BuildV3 = async ({
 		IMPORT_TRACE,
 		WORK_PATH: workPath,
 		ENTRYPOINT: entrypoint,
-		BUILDER_DIST: __dirname
+		BUILDER_DIST: __dirname,
 	};
 
 	const buildDir = await getWriteableDirectory();
@@ -172,15 +172,15 @@ export const build: BuildV3 = async ({
 	for (const bin of bins) {
 		const binPath = join(binDir, bin);
 		const target = await fs.readlink(binPath).catch((err) => {
-			if (err.code !== "EINVAL") throw err;
+			if (err.code !== 'EINVAL') throw err;
 		});
 		if (target) {
 			const rel = relative(importCacheDir, join(binDir, target));
-			if (!lambdaFiles[join(".import-cache", rel)]) {
+			if (!lambdaFiles[join('.import-cache', rel)]) {
 				continue;
 			}
 		}
-		lambdaFiles[join(".import-cache/bin", bin)] =
+		lambdaFiles[join('.import-cache/bin', bin)] =
 			await FileFsRef.fromFsPath({
 				fsPath: binPath,
 			});

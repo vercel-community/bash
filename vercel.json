@@ -1,6 +1,6 @@
 {
   "public": true,
   "functions": {
-    "api/*.sh": { "runtime": "vercel-dev-runtime@0.0.3" }
+    "api/*.sh": { "runtime": "vercel-dev-runtime@0.0.4" }
   }
 }

@@ -8,9 +8,9 @@ export PATH="$IMPORT_CACHE/bin:$PATH"
 
 # Load `import` and runtime
 # shellcheck disable=SC1090
-. "$(command -v import)"
+. "$IMPORT_CACHE/bin/import"
 # shellcheck disable=SC1090
 . "$IMPORT_CACHE/runtime.sh"
 
 # Load user code and process events in a loop forever
-_lambda_runtime_init
+_vercel_bash_runtime_init

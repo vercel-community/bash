@@ -23,6 +23,7 @@ const TMP = tmpdir();
 // `chmod()` is required for usage with `vercel-dev-runtime`
 // since file mode is not preserved in Vercel CLI deployments.
 fs.chmodSync(join(__dirname, 'build.sh'), 0o755);
+fs.chmodSync(join(__dirname, 'import.sh'), 0o755);
 fs.chmodSync(join(__dirname, 'bootstrap'), 0o755);
 
 const bootstrapPromise = FileFsRef.fromFsPath({
@@ -30,6 +31,9 @@ const bootstrapPromise = FileFsRef.fromFsPath({
 });
 const runtimePromise = FileFsRef.fromFsPath({
 	fsPath: join(__dirname, 'runtime.sh'),
+});
+const importPromise = FileFsRef.fromFsPath({
+	fsPath: join(__dirname, 'import.sh'),
 });
 const curlPromise = fetch(
 	'https://github.com/dtschan/curl-static/releases/download/v7.63.0/curl'
@@ -100,6 +104,7 @@ export const build: BuildV3 = async ({
 		IMPORT_TRACE,
 		WORK_PATH: workPath,
 		ENTRYPOINT: entrypoint,
+		BUILDER_DIST: __dirname
 	};
 
 	const buildDir = await getWriteableDirectory();
@@ -123,6 +128,7 @@ export const build: BuildV3 = async ({
 		)),
 		bootstrap: await bootstrapPromise,
 		'.import-cache/runtime.sh': await runtimePromise,
+		'.import-cache/bin/import': await importPromise,
 		'.import-cache/bin/curl': await curlPromise,
 		'.import-cache/bin/jq': await jqPromise,
 		// For now only the entrypoint file is copied into the lambda
@@ -157,7 +163,12 @@ export const build: BuildV3 = async ({
 	//  - if symlink, then include if it points to a traced files
 	//  - if not symlink, then always include in output
 	const binDir = join(importCacheDir, 'bin');
-	const bins = await fs.readdir(binDir);
+	let bins: string[] = [];
+	try {
+		bins = await fs.readdir(binDir);
+	} catch (err: any) {
+		if (err.code !== 'ENOENT') throw err;
+	}
 	for (const bin of bins) {
 		const binPath = join(binDir, bin);
 		const target = await fs.readlink(binPath).catch((err) => {

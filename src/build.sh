@@ -4,17 +4,9 @@ set -euo pipefail
 # `import` debug logs are always enabled during build
 export IMPORT_DEBUG=1
 
-# Install `import`
-IMPORT_BIN="$IMPORT_CACHE/bin/import"
-echo "Installing \`import\` to \"$IMPORT_BIN\"…"
-mkdir -p "$(dirname "$IMPORT_BIN")"
-curl -sfLS "https://import.sh" > "$IMPORT_BIN"
-chmod +x "$IMPORT_BIN"
-echo "Done installing \`import\`"
-
 # Cache runtime and user dependencies
 echo "Caching imports in \"$ENTRYPOINT\"…"
-. "$IMPORT_BIN"
+. "$BUILDER_DIST/import.sh"
 . "$WORK_PATH/$ENTRYPOINT"
 echo "Done caching imports"
 

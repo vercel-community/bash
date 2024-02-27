@@ -189,7 +189,7 @@ export const build: BuildV3 = async ({
 	const output = new Lambda({
 		files: lambdaFiles,
 		handler: entrypoint,
-		runtime: 'provided',
+		runtime: 'provided.al2023',
 		environment: configEnv,
 	});
 

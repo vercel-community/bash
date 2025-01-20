@@ -1,22 +1,20 @@
-import fs from 'fs-extra';
-import { tmpdir } from 'os';
-import execa from 'execa';
-import fetch from 'node-fetch';
-import { join, dirname, normalize, relative } from 'path';
-import { snakeCase } from 'snake-case';
 import {
-	FileFsRef,
-	glob,
-	download,
-	Lambda,
-	shouldServe,
 	BuildV3,
-	PrepareCache,
-	Files,
+	download,
 	FileBlob,
+	FileFsRef,
+	Files,
 	getWriteableDirectory,
+	glob,
+	Lambda,
+	PrepareCache,
+	shouldServe,
 	streamToBuffer,
 } from '@vercel/build-utils';
+import fs from 'fs-extra';
+import fetch from 'node-fetch';
+import { tmpdir } from 'os';
+import { dirname, join, normalize, relative } from 'path';
 
 const TMP = tmpdir();
 
@@ -76,6 +74,10 @@ export const build: BuildV3 = async ({
 	meta = {},
 	config = {},
 }) => {
+	// Vercel runtime does not support ES modules, so we need to use dynamic imports
+	const { execa } = await import('execa');
+	const { snakeCase } = await import('change-case');
+
 	await download(files, workPath, meta);
 
 	const { devCacheDir = join(workPath, '.vercel', 'cache') } = meta;

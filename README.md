@@ -50,7 +50,7 @@ configuration in the root directory (`my-bash-project`):
 {
 	"version": 2,
 	"functions": {
-		"api/*.sh": { "runtime": "vercel-bash@4.1.0" }
+		"api/*.sh": { "runtime": "vercel-bash@4.2.0" }
 	}
 }
 ```
